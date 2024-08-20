@@ -1,6 +1,7 @@
 # [HARDWARE]
 xarm_connected = False
-eda_live = False
+eda_live = True
+eeg_live = True
 
 # [PLAY PARAMS]
 silence_listener = False
@@ -31,6 +32,7 @@ mac_address = "98:D3:B1:FD:3D:1F"  # '/dev/cu.BITalino-3F-AE' (Linux)
 
 # [STREAMING]
 stream_list = ['rnd_poetry',
+               'eeg2flow',
                'flow2core',
                'core2flow',
                'audio2core',
@@ -42,7 +44,7 @@ stream_list = ['rnd_poetry',
 # debug = logging.INFO
 
 # [DATAWRITER]
-data_writer = True
+data_writer = False
 
 """
 Notes:
