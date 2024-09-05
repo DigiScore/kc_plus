@@ -20,7 +20,7 @@ from time import sleep, time
 
 import config
 from modules.bitalino import BITalino
-from modules.brainbit import BrainbitReader
+# from modules.brainbit import BrainbitReader
 from modules.listener import Listener
 from nebula.ai_factory import AIFactoryRAMI
 
@@ -75,16 +75,16 @@ class Nebula(Listener, AIFactoryRAMI):
 
         # Build the AI factory and pass it the data dict
         AIFactoryRAMI.__init__(self, speed)
-        self.BRAINBIT_CONNECTED = config.eeg_live
+        # self.BRAINBIT_CONNECTED = config.eeg_live
         self.BITALINO_CONNECTED = config.eda_live
 
         # Init brainbit reader
-        if self.BRAINBIT_CONNECTED:
-            logging.info("Starting EEG connection")
-            self.eeg_board = BrainbitReader()
-            self.eeg_board.start()
-            first_brain_data = self.eeg_board.read(1)
-            logging.info(f'Data from brainbit = {first_brain_data}')
+        # if self.BRAINBIT_CONNECTED:
+        #     logging.info("Starting EEG connection")
+        #     self.eeg_board = BrainbitReader()
+        #     self.eeg_board.start()
+        #     first_brain_data = self.eeg_board.read(1)
+        #     logging.info(f'Data from brainbit = {first_brain_data}')
 
         # Init bitalino
         if self.BITALINO_CONNECTED:
@@ -104,7 +104,7 @@ class Nebula(Listener, AIFactoryRAMI):
                         eda_started = True
 
             self.eda.start(BITALINO_BAUDRATE, BITALINO_ACQ_CHANNELS)
-            first_eda_data = self.eda.read(1)[0]
+            first_eda_data = self.eda.read(1)[0, 1, 2]
             logging.info(f'Data from BITalino = {first_eda_data}')
 
         # Work out master timing then collapse hivemind.running
@@ -167,38 +167,38 @@ class Nebula(Listener, AIFactoryRAMI):
                 self.hivemind.eda_buffer = np.random.uniform(size=(1, 50))
 
             # Read data from brainbit
-            if self.BRAINBIT_CONNECTED:
-                # Get raw data
-                eeg = self.eeg_board.read(1)
-                logging.debug(f"eeg data raw = {eeg}")
-
-                # Update raw EEG buffer
-                eeg_2d = np.array(eeg)[:, np.newaxis]
-                self.hivemind.eeg_buffer_raw = np.append(
-                    self.hivemind.eeg_buffer_raw, eeg_2d, axis=1)
-                self.hivemind.eeg_buffer_raw = np.delete(
-                    self.hivemind.eeg_buffer_raw, 0, axis=1)
-
-                # Detrend on the buffer time window
-                eeg_detrend = signal.detrend(self.hivemind.eeg_buffer_raw)
-
-                # Get min and max from raw EEG buffer
-                eeg_mins = np.min(eeg_detrend, axis=1)
-                eeg_maxs = np.max(eeg_detrend, axis=1)
-                eeg_mins = eeg_mins - 0.05 * (eeg_maxs - eeg_mins)
-
-                # Rescale between 0 and 1
-                eeg_norm = scaler(eeg_detrend[:, -1], eeg_mins, eeg_maxs)
-
-                # Update normalised EEG buffer
-                eeg_norm_2d = eeg_norm[:, np.newaxis]
-                self.hivemind.eeg_buffer = np.append(
-                    self.hivemind.eeg_buffer, eeg_norm_2d, axis=1)
-                self.hivemind.eeg_buffer = np.delete(
-                    self.hivemind.eeg_buffer, 0, axis=1)
-            else:
-                # Random data if no brainbit
-                self.hivemind.eeg_buffer = np.random.uniform(size=(4, 50))
+            # if self.BRAINBIT_CONNECTED:
+            #     # Get raw data
+            #     eeg = self.eeg_board.read(1)
+            #     logging.debug(f"eeg data raw = {eeg}")
+            #
+            #     # Update raw EEG buffer
+            #     eeg_2d = np.array(eeg)[:, np.newaxis]
+            #     self.hivemind.eeg_buffer_raw = np.append(
+            #         self.hivemind.eeg_buffer_raw, eeg_2d, axis=1)
+            #     self.hivemind.eeg_buffer_raw = np.delete(
+            #         self.hivemind.eeg_buffer_raw, 0, axis=1)
+            #
+            #     # Detrend on the buffer time window
+            #     eeg_detrend = signal.detrend(self.hivemind.eeg_buffer_raw)
+            #
+            #     # Get min and max from raw EEG buffer
+            #     eeg_mins = np.min(eeg_detrend, axis=1)
+            #     eeg_maxs = np.max(eeg_detrend, axis=1)
+            #     eeg_mins = eeg_mins - 0.05 * (eeg_maxs - eeg_mins)
+            #
+            #     # Rescale between 0 and 1
+            #     eeg_norm = scaler(eeg_detrend[:, -1], eeg_mins, eeg_maxs)
+            #
+            #     # Update normalised EEG buffer
+            #     eeg_norm_2d = eeg_norm[:, np.newaxis]
+            #     self.hivemind.eeg_buffer = np.append(
+            #         self.hivemind.eeg_buffer, eeg_norm_2d, axis=1)
+            #     self.hivemind.eeg_buffer = np.delete(
+            #         self.hivemind.eeg_buffer, 0, axis=1)
+            # else:
+            #     # Random data if no brainbit
+            #     self.hivemind.eeg_buffer = np.random.uniform(size=(4, 50))
 
             sleep(0.1)  # for 10 Hz
 
@@ -208,7 +208,7 @@ class Nebula(Listener, AIFactoryRAMI):
         """
         Terminate threads and connections like a grownup.
         """
-        if self.BRAINBIT_CONNECTED:
-            self.eeg_board.terminate()
+        # if self.BRAINBIT_CONNECTED:
+        #     self.eeg_board.terminate()
         if self.BITALINO_CONNECTED:
             self.eda.close()

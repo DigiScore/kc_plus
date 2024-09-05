@@ -82,10 +82,14 @@ class AIFactoryRAMI:
         self.hivemind = DataBorg()
         self.global_speed = speed
         # Instantiate nets as objects and make models
-        logging.info('NNetRework1 - EEG to flow initialization')
-        self.eeg2flow = NNetRAMI(name="eeg2flow",
-                                   model='nebula/models/eeg2flow.pt',
-                                   in_feature='eeg_buffer')
+        # logging.info('NNetRework1 - EEG to flow initialization')
+        # self.eeg2flow = NNetRAMI(name="eeg2flow",
+        #                            model='nebula/models/eeg2flow.pt',
+        #                            in_feature='eeg_buffer')
+        logging.info('NNetRework1 - Dancer XY to flow initialization')
+        self.dancer2flow = NNetRAMI(name="core2flow",
+                                    model='nebula/models/core2flow.pt',
+                                    in_feature='current_dancer_x_y')
 
         logging.info('NNetRework2 - Flow to core initialization')
         self.flow2core = NNetRAMI(name="flow2core",

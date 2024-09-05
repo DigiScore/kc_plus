@@ -28,6 +28,9 @@ class DataBorg:
             self.core2flow: float = random()
             self.core2flow_2d: np.array = np.random.uniform(size=(1, 50))
 
+            self.dancer2flow: float = random()
+            self.dancer2flow_2d: np.array = np.random.uniform(size=(1, 50))
+
             self.audio2core: float = random()
             self.audio2core_2d: np.array = np.random.uniform(size=(2, 50))
 
@@ -66,6 +69,9 @@ class DataBorg:
             self.eda_buffer: np.array = np.random.uniform(size=(1, 50))
             """Live 5 sec buffered normalised data from bitalino"""
 
+            self.current_dancer_x_y: np.array = np.zeros((2, 50))
+            """Normalised 5 sec xy cartesian dancer XY coords buffer"""
+
             ######################
             # Additional streams
             ######################
@@ -98,6 +104,7 @@ class DataBorg:
             # TODO: 2 first elements could be assigned based on the NNets out
             # eg. flow2core or audio2core
             """Generated output of robot movement from NNets"""
+
 
             ######################
             # Running vars

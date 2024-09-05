@@ -5,7 +5,7 @@ eeg_live = True
 
 # [PLAY PARAMS]
 silence_listener = False
-duration_of_piece = 480  # in sec
+duration_of_piece = 240  # in sec
 speed = 5  # dynamic tempo of the all processes: 1 = slow, 10 = fast
 temperature = 0
 
@@ -27,7 +27,7 @@ mic_in_logging = False
 
 # [BITALINO]
 baudrate = 10
-channels = [0]
+channels = [0, 1, 2] # eda in 1, XY in 2 & 3
 mac_address = "00:21:08:35:17:C0" #
 # "98:D3:B1:FD:3D:1F"  # '/dev/cu.BITalino-3F-AE' (Linux)
 
