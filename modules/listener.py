@@ -3,10 +3,13 @@ import numpy as np
 import pyaudio
 from random import random
 from scipy import signal
-from scipy.io import wavfile
 from time import time
 
 import config
+
+if config.data_writer:
+    from scipy.io import wavfile
+
 from nebula.hivemind import DataBorg
 
 def buffer_scaler(in_feature, mins, maxs):
@@ -113,7 +116,8 @@ class Listener:
         self.terminate_listener()
 
     def terminate_listener(self):
-        wavfile.write(f'data/{self.hivemind.session_date}.wav', self.RATE,
+        if config.data_writer:
+            wavfile.write(f'data/{self.hivemind.session_date}.wav', self.RATE,
                       self.hivemind.audio_buffer_raw.astype(np.int16))
         self.stream.stop_stream()
         self.stream.close()

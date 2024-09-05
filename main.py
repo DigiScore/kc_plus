@@ -4,9 +4,11 @@ import time
 
 import config
 from modules.conducter import Conducter
-from modules.data_writer import DataWriter
 from nebula.hivemind import DataBorg
 from nebula.nebula import Nebula
+
+if config.data_writer:
+    from modules.data_writer import DataWriter
 
 
 class Main:
@@ -20,7 +22,7 @@ class Main:
     Paramaters are to be modified in config.py.
     """
     def __init__(self):
-        art.tprint("RAMI")
+        art.tprint("KC Plus")
         # Build initial dataclass filled with random numbers
         self.hivemind = DataBorg()
 
