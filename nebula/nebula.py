@@ -20,7 +20,7 @@ from time import sleep, time
 
 import config
 from modules.bitalino import BITalino
-# from modules.brainbit import BrainbitReader
+from modules.brainbit import BrainbitReader
 from modules.listener import Listener
 from nebula.ai_factory import AIFactoryRAMI
 
