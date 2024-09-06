@@ -105,7 +105,10 @@ class Conducter:
             # (either mic_in or stream in config.stream_list)
             ###################################################################
             if random() < self.mic_in_prediction:
-                rnd_stream = 'mic_in'
+                if random() < 0.5:
+                    rnd_stream = 'mic_in'
+                else:
+                    rnd_stream = 'dancer'
             else:
                 rnd = randrange(stream_list_len)
                 rnd_stream = stream_list[rnd]

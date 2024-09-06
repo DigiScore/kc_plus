@@ -1,7 +1,7 @@
 # [HARDWARE]
 xarm_connected = True
 eda_live = True
-eeg_live = True
+eeg_live = False
 
 # [PLAY PARAMS]
 silence_listener = False
@@ -27,13 +27,13 @@ mic_in_logging = False
 
 # [BITALINO]
 baudrate = 10
-channels = [0, 1, 2, 3] # eda in 1, XYZ in 2 & 3
+channels = [0]
 mac_address = "00:21:08:35:17:C0" #
 # "98:D3:B1:FD:3D:1F"  # '/dev/cu.BITalino-3F-AE' (Linux)
 
 # [STREAMING]
 stream_list = ['rnd_poetry',
-               'eeg2flow',
+               'dancer2flow',
                'flow2core',
                'core2flow',
                'audio2core',
