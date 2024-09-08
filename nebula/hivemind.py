@@ -69,6 +69,12 @@ class DataBorg:
             self.eda_buffer: np.array = np.random.uniform(size=(1, 50))
             """Live 5 sec buffered normalised data from bitalino"""
 
+            self.current_dancer_x_y_z: tuple = (0, 0, 0)
+            """Normalised cartesian dancer XYZ coords"""
+
+            self.current_dancer_rnd: float = (random())
+            """Random X, Y, or Z from live XYZ input, used in direct thought train"""
+
             self.current_dancer_x_y: np.array = np.zeros((2, 50))
             """Normalised 5 sec xy cartesian dancer XY coords buffer"""
 
@@ -125,18 +131,21 @@ class DataBorg:
         self.rnd_poetry = random()
         self.rhythm_rate = randrange(30, 100) / 100
 
-        self.eeg_buffer = np.random.uniform(size=(4, 50))
+        # self.eeg_buffer = np.random.uniform(size=(4, 50))
         self.eda_buffer = np.random.uniform(size=(1, 50))
         self.audio_buffer = np.random.uniform(size=(1, 50))
 
-        self.eeg2flow = random()
-        self.eeg2flow_2d = np.random.uniform(size=(1, 50))
+        # self.eeg2flow = random()
+        # self.eeg2flow_2d = np.random.uniform(size=(1, 50))
 
         self.flow2core = random()
         self.flow2core_2d = np.random.uniform(size=(2, 50))
 
         self.core2flow = random()
         self.core2flow_2d = np.random.uniform(size=(1, 50))
+
+        self.dancer2flow = random()
+        self.dancer2flow_2d = np.random.uniform(size=(1, 50))
 
         self.audio2core = random()
         self.audio2core_2d = np.random.uniform(size=(2, 50))

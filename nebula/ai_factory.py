@@ -121,7 +121,7 @@ class AIFactoryRAMI:
                                    model='nebula/models/eda2flow.pt',
                                    in_feature='eda_buffer')
 
-        self.netlist = [self.eeg2flow,
+        self.netlist = [self.dancer2flow,
                         self.flow2core,
                         self.core2flow,
                         self.audio2core,

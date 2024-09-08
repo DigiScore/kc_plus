@@ -17,6 +17,7 @@ import warnings
 from scipy import signal
 from threading import Thread
 from time import sleep, time
+from random import random, choice
 
 import config
 from modules.bitalino import BITalino
@@ -107,6 +108,11 @@ class Nebula(Listener, AIFactoryRAMI):
             first_eda_data = self.eda.read(1)[0, 1, 2, 3]
             logging.info(f'Data from BITalino = {first_eda_data}')
 
+            # extent params for XYZ
+            self.dancer_x_extents = config.dancer_x_extents
+            self.dancer_y_extents = config.dancer_y_extents
+            self.dancer_z_extents = config.dancer_z_extents
+
         # Work out master timing then collapse hivemind.running
         self.endtime = None
 
@@ -134,8 +140,13 @@ class Nebula(Listener, AIFactoryRAMI):
                 break
             # Read data from bitalino
             if self.BITALINO_CONNECTED:
+
+                #######################
+                #  1. from EDA
+                #######################
+
                 # Get raw data from EDA
-                eda_raw = [self.eda.read(1)[0][0]]
+                eda_raw = [self.eda.read(1)[0][-4]]
                 logging.debug(f"eda data raw = {eda_raw}")
 
                 # Update raw EDA buffer
@@ -163,59 +174,39 @@ class Nebula(Listener, AIFactoryRAMI):
                 self.hivemind.eda_buffer = np.delete(self.hivemind.eda_buffer,
                                                      0, axis=1)
 
-                # XYZ
-                # todo sort this out
-                pose =  [self.eda.read(1)[0][1, -1]]
-                norm_x = ((pose[0] - self.x_extents[0]) / (self.x_extents[1] - self.x_extents[0])) * (1 - 0) + 0
-                norm_y = ((pose[1] - self.y_extents[0]) / (self.y_extents[1] - self.y_extents[0])) * (1 - 0) + 0
-                norm_z = ((pose[2] - self.z_extents[0]) / (self.z_extents[1] - self.z_extents[0])) * (1 - 0) + 0
+                #######################
+                #  2. from XYZ
+                #######################
+
+                # Get raw data from XYZ (taken from robot arm code as uses same NNet in the AI Factory)
+                dancer_xyz_raw =  [self.eda.read(1)[0][-1:-4]]
+                norm_x = ((dancer_xyz_raw[0] - self.dancer_x_extents[0]) / (self.dancer_x_extents[1] - self.dancer_x_extents[0])) * (1 - 0) + 0
+                norm_y = ((dancer_xyz_raw[1] - self.dancer_y_extents[0]) / (self.dancer_y_extents[1] - self.dancer_y_extents[0])) * (1 - 0) + 0
+                norm_z = ((dancer_xyz_raw[2] - self.dancer_z_extents[0]) / (self.dancer_z_extents[1] - self.dancer_z_extents[0])) * (1 - 0) + 0
 
                 norm_xyz = (norm_x, norm_y, norm_z)
                 norm_xyz = tuple(np.clip(norm_xyz, 0.0, 1.0))
                 norm_xy_2d = np.array(norm_xyz[:2])[:, np.newaxis]
 
-                self.hivemind.current_robot_x_y_z = norm_xyz
-                self.hivemind.current_robot_x_y = np.append(self.hivemind.current_robot_x_y, norm_xy_2d, axis=1)
-                self.hivemind.current_robot_x_y = np.delete(self.hivemind.current_robot_x_y, 0, axis=1)
+                self.hivemind.current_dancer_x_y_z = norm_xyz
+                self.hivemind.current_dancer_x_y = np.append(self.hivemind.current_dancer_x_y, norm_xy_2d, axis=1)
+                self.hivemind.current_dancer_x_y = np.delete(self.hivemind.current_dancer_x_y, 0, axis=1)
+
+                # add random X, Y, or Z for direct live stream
+                self.hivemind.current_dancer_rnd = choice(norm_xyz)
 
 
             else:
                 # Random data if no bitalino
+                # Random data for EDA
                 self.hivemind.eda_buffer = np.random.uniform(size=(1, 50))
 
-            # Read data from brainbit
-            # if self.BRAINBIT_CONNECTED:
-            #     # Get raw data
-            #     eeg = self.eeg_board.read(1)
-            #     logging.debug(f"eeg data raw = {eeg}")
-            #
-            #     # Update raw EEG buffer
-            #     eeg_2d = np.array(eeg)[:, np.newaxis]
-            #     self.hivemind.eeg_buffer_raw = np.append(
-            #         self.hivemind.eeg_buffer_raw, eeg_2d, axis=1)
-            #     self.hivemind.eeg_buffer_raw = np.delete(
-            #         self.hivemind.eeg_buffer_raw, 0, axis=1)
-            #
-            #     # Detrend on the buffer time window
-            #     eeg_detrend = signal.detrend(self.hivemind.eeg_buffer_raw)
-            #
-            #     # Get min and max from raw EEG buffer
-            #     eeg_mins = np.min(eeg_detrend, axis=1)
-            #     eeg_maxs = np.max(eeg_detrend, axis=1)
-            #     eeg_mins = eeg_mins - 0.05 * (eeg_maxs - eeg_mins)
-            #
-            #     # Rescale between 0 and 1
-            #     eeg_norm = scaler(eeg_detrend[:, -1], eeg_mins, eeg_maxs)
-            #
-            #     # Update normalised EEG buffer
-            #     eeg_norm_2d = eeg_norm[:, np.newaxis]
-            #     self.hivemind.eeg_buffer = np.append(
-            #         self.hivemind.eeg_buffer, eeg_norm_2d, axis=1)
-            #     self.hivemind.eeg_buffer = np.delete(
-            #         self.hivemind.eeg_buffer, 0, axis=1)
-            # else:
-            #     # Random data if no brainbit
-            #     self.hivemind.eeg_buffer = np.random.uniform(size=(4, 50))
+                # Random data for XYZ
+                rnd_xyz = (random(), random(), random())
+                norm_xy_2d = np.array(rnd_xyz[:2])[:, np.newaxis]
+
+                self.hivemind.current_dancer_x_y = np.append(self.hivemind.current_dancer_x_y, norm_xy_2d, axis=1)
+                self.hivemind.current_dancer_x_y = np.delete(self.hivemind.current_dancer_x_y, 0, axis=1)
 
             sleep(0.1)  # for 10 Hz
 

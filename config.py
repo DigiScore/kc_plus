@@ -20,6 +20,11 @@ xarm_z_extents = [55, 1000]
 xarm_irregular_shape_extents = 50
 xarm_fenced = True
 
+# [DANCER]
+dancer_x_extents = [0, 1000]
+dancer_y_extents = [0, 1000]
+dancer_z_extents = [0, 1000]
+
 # [SOUND IN]
 mic_sensitivity = 10000
 mic_in_prediction = 0.36

@@ -108,7 +108,7 @@ class Conducter:
                 if random() < 0.5:
                     rnd_stream = 'mic_in'
                 else:
-                    rnd_stream = 'dancer'
+                    rnd_stream = 'current_dancer_rnd'
             else:
                 rnd = randrange(stream_list_len)
                 rnd_stream = stream_list[rnd]
