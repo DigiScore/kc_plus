@@ -9,14 +9,16 @@ duration_of_piece = 240  # in sec
 speed = 5  # dynamic tempo of the all processes: 1 = slow, 10 = fast
 temperature = 0
 
+# [BEHAVIOUR PARAMS]
+phrase_length_extents = [300, 800]
+rhythm_length_extents = [500, 2000]
+arm_speed_extents = [30, 200]
+
 # [XARM]
 xarm1_port = '192.168.1.222'
 xarm_x_extents = [-500, 500]  # cartesian coords in mm
 xarm_y_extents = [-500, 500]
 xarm_z_extents = [55, 1000]
-# xarm_ballet_x_extents = [400, 400]
-# xarm_ballet_y_extents = [-250, 250]
-# xarm_ballet_z_extents = [150, 400]
 xarm_irregular_shape_extents = 50
 xarm_fenced = True
 

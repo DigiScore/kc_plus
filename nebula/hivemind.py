@@ -72,7 +72,7 @@ class DataBorg:
             self.current_dancer_x_y_z: tuple = (0, 0, 0)
             """Normalised cartesian dancer XYZ coords"""
 
-            self.current_dancer_rnd: float = (random())
+            self.current_dancer_xyz_rnd: float = (random())
             """Random X, Y, or Z from live XYZ input, used in direct thought train"""
 
             self.current_dancer_x_y: np.array = np.zeros((2, 50))

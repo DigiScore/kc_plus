@@ -27,7 +27,7 @@ class Main:
         self.hivemind = DataBorg()
 
         # Logging for all modules
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.DEBUG)
 
         # Init the AI factory (inherits AIFactory, Listener)
         nebula = Nebula(speed=config.speed)

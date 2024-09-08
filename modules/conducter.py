@@ -34,6 +34,12 @@ class Conducter:
         self.continuous_source = 0   # source of data used for continous movement. 0 == random, 1 == NN, 2 == peak
         self.global_speed = speed
         self.mic_in_prediction = config.mic_in_prediction
+        self.phrase_length_extents_min = config.phrase_length_extents[0]
+        self.phrase_length_extents_max = config.phrase_length_extents[1]
+        self.rhythm_length_extents_min = config.rhythm_length_extents[0]
+        self.rhythm_length_extents_max = config.rhythm_length_extents[1]
+        self.arm_speed_min = config.arm_speed_extents[0]
+        self.arm_speed_max = config.arm_speed_extents[1]
 
         # Get the baseline temperature from config
         self.temperature = config.temperature
@@ -94,7 +100,7 @@ class Conducter:
                 self.drawbot.clear_commands()
 
             # Get length of gesture
-            phrase_length = (randrange(300, 800) / 100)  # + self.global_speed
+            phrase_length = (randrange(self.phrase_length_extents_min, self.phrase_length_extents_max) / 100)  # + self.global_speed
             phrase_loop_end = time() + phrase_length
 
             print(f"======== GESTURE - Daddy cycle started ========", end=' ')
@@ -108,7 +114,7 @@ class Conducter:
                 if random() < 0.5:
                     rnd_stream = 'mic_in'
                 else:
-                    rnd_stream = 'current_dancer_rnd'
+                    rnd_stream = 'current_dancer_xyz_rnd'
             else:
                 rnd = randrange(stream_list_len)
                 rnd_stream = stream_list[rnd]
@@ -131,11 +137,11 @@ class Conducter:
                     self.drawbot.clear_alarms()
 
                 # Generate rhythm rate here
-                rhythm_loop_end_time = time() + (randrange(500, 2000) / 1000)
+                rhythm_loop_end_time = time() + (randrange(self.rhythm_length_extents_min, self.rhythm_length_extents_max) / 1000)
                 logging.debug(f'end time = {rhythm_loop_end_time}')
 
                 # Speed for this phrase
-                arm_speed = randrange(30, 200)
+                arm_speed = randrange(self.arm_speed_min, self.arm_speed_max)
                 if self.XARM_CONNECTED:
                     self.drawbot.set_speed(arm_speed)
 
