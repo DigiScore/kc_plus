@@ -169,6 +169,7 @@ class Nebula(Listener, AIFactoryRAMI):
             # Read data from brainbit
             if self.BRAINBIT_CONNECTED:
                 # Get raw data
+
                 eeg = self.eeg_board.read(1)
                 logging.debug(f"eeg data raw = {eeg}")
 

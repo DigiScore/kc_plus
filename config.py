@@ -1,11 +1,11 @@
 # [HARDWARE]
 xarm_connected = True
 eda_live = True
-eeg_live = True
+eeg_live = False
 
 # [PLAY PARAMS]
 silence_listener = False
-duration_of_piece = 480  # in sec
+duration_of_piece = 240  # in sec
 speed = 5  # dynamic tempo of the all processes: 1 = slow, 10 = fast
 temperature = 0
 

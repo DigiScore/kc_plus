@@ -132,7 +132,7 @@ class Conducter:
                 logging.debug(f'end time = {rhythm_loop_end_time}')
 
                 # Speed for this phrase
-                arm_speed = randrange(30, 200)
+                arm_speed = randrange(30, 175)
                 if self.XARM_CONNECTED:
                     self.drawbot.set_speed(arm_speed)
 
