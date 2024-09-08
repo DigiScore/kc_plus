@@ -216,7 +216,5 @@ class Nebula(Listener, AIFactoryRAMI):
         """
         Terminate threads and connections like a grownup.
         """
-        # if self.BRAINBIT_CONNECTED:
-        #     self.eeg_board.terminate()
         if self.BITALINO_CONNECTED:
             self.eda.close()
