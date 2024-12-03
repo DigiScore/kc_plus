@@ -1,6 +1,6 @@
 # [HARDWARE]
 xarm_connected = True
-eda_live = True
+eda_live = False
 eeg_live = False
 
 # [PLAY PARAMS]
@@ -23,7 +23,7 @@ xarm_fenced = True
 # [SOUND IN]
 mic_sensitivity = 10000
 mic_in_prediction = 0.36
-mic_in_logging = False
+mic_in_logging = True
 
 # [BITALINO]
 baudrate = 10
@@ -45,7 +45,7 @@ stream_list = ['rnd_poetry',
 # debug = logging.INFO
 
 # [DATAWRITER]
-data_writer = False
+data_writer = True
 
 """
 Notes:

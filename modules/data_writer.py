@@ -31,13 +31,13 @@ class DataWriter:
             "audio2flow": self.hivemind.audio2flow,
             "flow2audio": self.hivemind.flow2audio,
             "eda2flow": self.hivemind.eda2flow,
-            "current_robot_x_y_z": {
-                "x": self.hivemind.current_robot_x_y_z[0],
-                "y": self.hivemind.current_robot_x_y_z[1],
-                "z": self.hivemind.current_robot_x_y_z[2],
+            # "current_robot_x_y_z": {
+            "x": self.hivemind.current_robot_x_y_z[0],
+            "y": self.hivemind.current_robot_x_y_z[1],
+            "z": self.hivemind.current_robot_x_y_z[2],
             "design decision": self.hivemind.design_decision,
             "interrupt": self.hivemind.interrupted
-            }
+            # }
 
         }
         json_object = json.dumps(json_dict)
